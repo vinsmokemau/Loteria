@@ -10,20 +10,30 @@
   <div class="container">
 
     <div class="row">
+      <!-- User Board -->
       <div class="col-6">
-        <div class="row">
-          <h2>User Board</h2>
-        </div>
+        
+        <div class="card">
 
-        <div class="row">
+          <div class="card-title">
+            <h2>User Board</h2>
+            <hr>
+          </div>
 
-          {% for user_card in user_cards %}
-            <div class="col-3">
-              <div class="card" style="width: 75%;">
-                <img src="{{ user_card.image.url }}" class="card-img-top" alt="...">
-              </div>
+          <div class="card-title">
+            <div class="row">
+
+              {% for user_card in player_board.cards.all %}
+                <div class="col-3">
+                  <div class="card" style="width: 60%;">
+                    <img src="{{ user_card.card.image.url }}" class="card-img-top" alt="...">
+                    {{ user_card.position }}
+                  </div>
+                </div>
+              {% endfor %}
+
             </div>
-          {% endfor %}
+          </div>
 
         </div>
 
@@ -31,21 +41,31 @@
 
       <!-- Computer Board -->
       <div class="col-6">
-        <div class="row">
-          <h2>Computer Board</h2>
-        </div>
+        
+        <div class="card">
 
-        <div class="row">
+          <div class="card-title">
+            <h2>Computer Board</h2>
+            <hr>
+          </div>
 
-          {% for computer_card in computer_cards %}
-            <div class="col-3">
-              <div class="card" style="width: 75%;">
-                <img src="{{ computer_card.image.url }}" class="card-img-top" alt="...">
-              </div>
+          <div class="card-title">
+            <div class="row">
+
+              {% for computer_card in computer_board.cards.all %}
+                <div class="col-3">
+                  <div class="card" style="width: 60%;">
+                    <img src="{{ computer_card.card.image.url }}" class="card-img-top" alt="...">
+                    {{ computer_card.position }}
+                  </div>
+                </div>
+              {% endfor %}
+
             </div>
-          {% endfor %}
+          </div>
 
         </div>
+
       </div>
     </div>
   </div>

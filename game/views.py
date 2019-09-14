@@ -1,14 +1,15 @@
+"""Game's Views."""
 from .models import (
     Game,
     Board,
     GameCard,
 )
 from deck.models import Card
-from django.urls import reverse
 from django.views.generic import (
+    DetailView,
     TemplateView,
 )
-from django.http import Http404, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 
 
 class GameView(TemplateView):
@@ -20,6 +21,7 @@ class GameView(TemplateView):
         context['user_cards'] = Card.objects.order_by('?')[:16]
         context['computer_cards'] = Card.objects.order_by('?')[:16]
         return context
+
 
 def start_game(request):
     game = Game.objects.create()
@@ -49,4 +51,21 @@ def start_game(request):
         )
         computer_game_card.save()
         count += 1
-    return HttpResponseRedirect(reverse('game:game'))
+    return HttpResponseRedirect(game.get_absolute_url())
+
+
+class GameDetailView(DetailView):
+
+    model = Game
+    pk_url_kwarg = "game_id"
+    template_name = "game.html"
+    context_object_game = "game"
+
+    def get_context_data(self, **kwargs):
+        context = super(GameDetailView, self).get_context_data(**kwargs)
+        for board in self.object.boards.all():
+            if board.player == 'jugador':
+                context['player_board'] = board
+            else:
+                context['computer_board'] = board
+        return context

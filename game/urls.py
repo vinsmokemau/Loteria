@@ -16,5 +16,10 @@ urlpatterns = [
         views.start_game,
         name='start-game'
     ),
+    path(
+        'juego/<int:game_id>/',
+        views.GameDetailView.as_view(),
+        name='game_detail'
+    ),
 
 ]
