@@ -32,6 +32,14 @@ class Board(models.Model):
     def __str__(self):
         return self.player
 
+    @property
+    def not_checked_cards(self):
+        list_cards = []
+        for card in self.cards.all():
+            if not (card.checked):
+                list_cards.append(card.card.number)
+        return list_cards
+
     def winner(self):
         cards = {}
         for card in self.cards.order_by('position'):

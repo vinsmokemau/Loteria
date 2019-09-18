@@ -25,10 +25,17 @@
 
               {% for user_card in player_board.cards.all %}
                 <div class="col-3">
-                  <div class="card" style="width: 60%;">
-                    <img src="{{ user_card.card.image.url }}" class="card-img-top" alt="...">
-                    {{ user_card.position }}
-                  </div>
+                  {% if user_card.checked %}
+                    <div class="card" style="width: 60%;">
+                      <img src="{{ user_card.card.cross_image.url }}" class="card-img-top" alt="...">
+                      {{ user_card.position }}
+                    </div>
+                  {% else %}
+                    <div class="card" style="width: 60%;">
+                      <img src="{{ user_card.card.image.url }}" class="card-img-top" alt="...">
+                      {{ user_card.position }}
+                    </div>
+                  {% endif %}
                 </div>
               {% endfor %}
 
@@ -54,10 +61,17 @@
 
               {% for computer_card in computer_board.cards.all %}
                 <div class="col-3">
-                  <div class="card" style="width: 60%;">
-                    <img src="{{ computer_card.card.image.url }}" class="card-img-top" alt="...">
-                    {{ computer_card.position }}
-                  </div>
+                  {% if computer_card.checked %}
+                    <div class="card" style="width: 60%;">
+                      <img src="{{ computer_card.card.cross_image.url }}" class="card-img-top" alt="...">
+                      {{ computer_card.position }}
+                    </div>
+                  {% else %}
+                    <div class="card" style="width: 60%;">
+                      <img src="{{ computer_card.card.image.url }}" class="card-img-top" alt="...">
+                      {{ computer_card.position }}
+                    </div>
+                  {% endif %}
                 </div>
               {% endfor %}
 

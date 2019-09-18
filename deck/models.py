@@ -15,6 +15,11 @@ class Card(models.Model):
         'nombre',
         max_length=50,
     )
+    cross_image = models.ImageField(
+        'imagen',
+        upload_to='cross_images',
+        null=True,
+    )
 
     class Meta:
         verbose_name = "Carta"
