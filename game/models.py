@@ -37,7 +37,7 @@ class Board(models.Model):
         list_cards = []
         for card in self.cards.all():
             if not (card.checked):
-                list_cards.append(card.card.number)
+                list_cards.append(card.card.name)
         return list_cards
 
     def winner(self):
@@ -45,27 +45,27 @@ class Board(models.Model):
         for card in self.cards.order_by('position'):
             cards[card.position] = card
         # Vertical Wins
-        if cards[1].position and cards[5].position and cards[9].position and cards[13].position:
+        if cards[1].checked and cards[5].checked and cards[9].checked and cards[13].checked:
             return True
-        elif cards[2].position and cards[6].position and cards[10].position and cards[14].position:
+        elif cards[2].checked and cards[6].checked and cards[10].checked and cards[14].checked:
             return True
-        elif cards[3].position and cards[7].position and cards[11].position and cards[15].position:
+        elif cards[3].checked and cards[7].checked and cards[11].checked and cards[15].checked:
             return True
-        elif cards[4].position and cards[8].position and cards[12].position and cards[16].position:
+        elif cards[4].checked and cards[8].checked and cards[12].checked and cards[16].checked:
             return True
         # Horizontal Wins
-        elif cards[1].position and cards[2].position and cards[3].position and cards[4].position:
+        elif cards[1].checked and cards[2].checked and cards[3].checked and cards[4].checked:
             return True
-        elif cards[5].position and cards[6].position and cards[7].position and cards[8].position:
+        elif cards[5].checked and cards[6].checked and cards[7].checked and cards[8].checked:
             return True
-        elif cards[9].position and cards[10].position and cards[11].position and cards[12].position:
+        elif cards[9].checked and cards[10].checked and cards[11].checked and cards[12].checked:
             return True
-        elif cards[13].position and cards[14].position and cards[15].position and cards[16].position:
+        elif cards[13].checked and cards[14].checked and cards[15].checked and cards[16].checked:
             return True
         # Diagonal Wins
-        elif cards[1].position and cards[6].position and cards[11].position and cards[16].position:
+        elif cards[1].checked and cards[6].checked and cards[11].checked and cards[16].checked:
             return True
-        elif cards[4].position and cards[7].position and cards[10].position and cards[13].position:
+        elif cards[4].checked and cards[7].checked and cards[10].checked and cards[13].checked:
             return True
         else:
             return False

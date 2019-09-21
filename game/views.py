@@ -1,4 +1,6 @@
 """Game's Views."""
+import cv2
+import pytesseract
 from .models import (
     Game,
     Board,
@@ -7,23 +9,13 @@ from .models import (
 from deck.models import Card
 from django.views.generic import (
     DetailView,
-    TemplateView,
 )
 from django.http import HttpResponseRedirect
-
-
-class GameView(TemplateView):
-
-    template_name = "game.html"
-
-    def get_context_data(self, **kwargs):
-        context = super(GameView, self).get_context_data(**kwargs)
-        context['user_cards'] = Card.objects.order_by('?')[:16]
-        context['computer_cards'] = Card.objects.order_by('?')[:16]
-        return context
+from django.shortcuts import get_object_or_404
 
 
 def start_game(request):
+    """Create a new game."""
     game = Game.objects.create()
     user_board = Board.objects.create(
         game=game,
@@ -55,6 +47,7 @@ def start_game(request):
 
 
 class GameDetailView(DetailView):
+    """Show the boards of two players."""
 
     model = Game
     pk_url_kwarg = "game_id"
@@ -62,6 +55,7 @@ class GameDetailView(DetailView):
     context_object_game = "game"
 
     def get_context_data(self, **kwargs):
+        """Get the context for the view."""
         context = super(GameDetailView, self).get_context_data(**kwargs)
         for board in self.object.boards.all():
             if board.player == 'jugador':
@@ -69,3 +63,31 @@ class GameDetailView(DetailView):
             else:
                 context['computer_board'] = board
         return context
+
+
+def new_card(request, game_id):
+    """Take a photo of a new card and detect if is in a board."""
+    game = get_object_or_404(Game, pk=game_id)
+    webcam = cv2.VideoCapture(0)
+    check, frame = webcam.read()
+    cv2.imwrite(filename='saved_img.jpg', img=frame)
+    webcam.release()
+    cv2.destroyAllWindows()
+
+    imagen = cv2.imread('saved_img.jpg')
+
+    text = pytesseract.image_to_string(imagen[380:460, 150:480]).lower()
+    print(text)
+    try:
+        card = Card.objects.get(name=text)
+        print(card.number)
+    except:
+        pass
+
+    for board in game.boards.all():
+        if text in board.not_checked_cards:
+            game_card = GameCard.objects.get(board=board, card__name=text)
+            game_card.checked = True
+            game_card.save()
+
+    return HttpResponseRedirect(game.get_absolute_url())
