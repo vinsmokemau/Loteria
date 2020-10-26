@@ -68,6 +68,7 @@ class GameDetailView(DetailView):
 def new_card(request, game_id):
     """Take a photo of a new card and detect if is in a board."""
     game = get_object_or_404(Game, pk=game_id)
+    pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
     webcam = cv2.VideoCapture(0)
     check, frame = webcam.read()
     cv2.imwrite(filename='saved_img.jpg', img=frame)
@@ -76,7 +77,7 @@ def new_card(request, game_id):
 
     imagen = cv2.imread('saved_img.jpg')
 
-    text = pytesseract.image_to_string(imagen[380:460, 150:480]).lower()
+    text = pytesseract.image_to_string(imagen[220:300, 50:400]).lower()
     print(text)
     try:
         card = Card.objects.get(name=text)

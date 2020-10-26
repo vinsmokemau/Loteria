@@ -3,6 +3,8 @@ import cv2
 import pytesseract
 import matplotlib.pyplot as plt
 
+pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+
 webcam = cv2.VideoCapture(0)
 check, frame = webcam.read()
 cv2.imwrite(filename='saved_img.jpg', img=frame)
@@ -11,9 +13,9 @@ cv2.destroyAllWindows()
 
 imagen = cv2.imread('saved_img.jpg')
 plt.figure()
-plt.imshow(imagen[380:460, 150:480])
+plt.imshow(imagen)
 
-text = pytesseract.image_to_string(imagen[380:460, 150:480]).lower()
+text = pytesseract.image_to_string(imagen[220:300, 50:400]).lower()
 
 print(text)
 
